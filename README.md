@@ -17,19 +17,8 @@ Este es un sistema de cotización inversa desarrollado en Rust (Tauri + Actix-we
     docker-compose up -d
     ```
 
-2.  **Configurar Base de Datos**:
-    Necesitamos ejecutar las migraciones. Como no hemos configurado `diesel_cli` en el proyecto, el sistema intentará conectarse, pero las tablas deben existir.
-    
-    *Opción A (Recomendada si tienes diesel-cli)*:
-    ```bash
-    diesel setup
-    diesel migration run
-    ```
-    
-    *Opción B (Manual)*:
-    Conéctate a la base de datos y ejecuta el SQL generado en `src-tauri/src/db/schema.rs` adaptado a SQL real (CREATE TABLE...).
-    
-    *Nota: Para facilitar, asegúrese de que la base de datos `supplier_portal` esté accesible.*
+2.  **Configuración de Base de Datos**:
+    ¡Buenas noticias! El sistema ahora cuenta con **migraciones automáticas**. No necesitas ejecutar ningún comando de SQL ni usar `diesel_cli`. Al iniciar la aplicación por primera vez (`npm run tauri dev`), el backend detectará si las tablas existen y las creará o actualizará automáticamente según sea necesario. Solo asegúrate de que el contenedor de Docker esté corriendo.
 
 3.  **Instalar Dependencias Frontend**:
     ```bash

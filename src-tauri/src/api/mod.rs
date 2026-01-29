@@ -29,7 +29,6 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .route("/admin/config/email", web::post().to(config::save_email_config))
             .route("/admin/config/test", web::post().to(config::test_email_config))
             .route("/admin/reset", web::delete().to(admin::reset_database))
-            .route("/admin/upgrade", web::post().to(admin::upgrade_database))
             .route("/suppliers/{id}", web::get().to(suppliers::get_supplier))
             .route("/suppliers/{id}/docs", web::put().to(suppliers::update_docs))
             .route("/upload", web::post().to(files::upload_file))

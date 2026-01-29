@@ -106,24 +106,6 @@ pub async fn reset_database(
     HttpResponse::Ok().json("Database reset successfully")
 }
 
-pub async fn upgrade_database(
-    pool: web::Data<DbPool>,
-) -> impl Responder {
-    let mut conn = pool.get().expect("couldn't get db connection from pool");
-    
-    // Raw SQL execution
-    let _ = diesel::sql_query("ALTER TABLE offers ADD COLUMN IF NOT EXISTS created_at TIMESTAMP NOT NULL DEFAULT NOW();")
-        .execute(&mut conn);
-        
-    let _ = diesel::sql_query("ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS is_reviewed BOOLEAN NOT NULL DEFAULT FALSE;")
-        .execute(&mut conn);
-    let _ = diesel::sql_query("ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS is_approved BOOLEAN NOT NULL DEFAULT FALSE;")
-        .execute(&mut conn);
-    let _ = diesel::sql_query("ALTER TABLE suppliers ADD COLUMN IF NOT EXISTS is_audited BOOLEAN NOT NULL DEFAULT FALSE;")
-        .execute(&mut conn);
-
-    HttpResponse::Ok().json("Database schema upgraded (compliance columns added)")
-}
 
 #[derive(Deserialize)]
 pub struct ComplianceUpdate {

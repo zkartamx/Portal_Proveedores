@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS email_config;
+DROP TABLE IF EXISTS offers;
+DROP TABLE IF EXISTS requests;
+DROP TABLE IF EXISTS suppliers;

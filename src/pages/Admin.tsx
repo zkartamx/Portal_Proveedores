@@ -471,26 +471,6 @@ export default function Admin() {
                                 </button>
                             </div>
 
-                            <hr style={{ borderColor: '#444', margin: '2rem 0' }} />
-                            <h4>Mantenimiento</h4>
-                            <button
-                                className="action-btn"
-                                style={{ background: '#8e44ad', marginTop: '10px', width: '100%' }}
-                                onClick={async () => {
-                                    if (confirm("¿Ejecutar actualización de esquema de Base de Datos? (Agrega campos faltantes como fechas y cumplimiento)")) {
-                                        try {
-                                            const res = await axios.post(`${API_URL}/admin/upgrade`);
-                                            alert("Éxito: " + res.data);
-                                            window.location.reload();
-                                        } catch (e: any) {
-                                            alert("Error: " + (e.response?.data || e.message));
-                                        }
-                                    }
-                                }}
-                            >
-                                🛠️ Forzar Actualización DB (Schema Upgrade)
-                            </button>
-
                             {showLogs && (
                                 <div style={{
                                     marginTop: '1rem',
