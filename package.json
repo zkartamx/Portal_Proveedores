@@ -1,6 +1,7 @@
 {
   "name": "tauri-app",
   "private": true,
+  "author": "Carlos Arteaga (https://www.itcarlos.com)",
   "version": "0.1.0",
   "license": "MIT",
   "type": "module",
