@@ -16,22 +16,18 @@ Este es un sistema de cotización inversa desarrollado en Rust (Tauri + Actix-we
     ```bash
     docker-compose up -d
     ```
-
-2.  **Configuración de Base de Datos**:
-    ¡Buenas noticias! El sistema ahora cuenta con **migraciones automáticas**. No necesitas ejecutar ningún comando de SQL ni usar `diesel_cli`. Al iniciar la aplicación por primera vez (`npm run tauri dev`), el backend detectará si las tablas existen y las creará o actualizará automáticamente según sea necesario. Solo asegúrate de que el contenedor de Docker esté corriendo.
-
-3.  **Instalar Dependencias Frontend**:
+2.  **Instalar Dependencias Frontend**:
     ```bash
     npm install
     ```
 
-4.  **Ejecutar Aplicación (Modo Desarrollo)**:
+3.  **Ejecutar Aplicación (Modo Desarrollo)**:
     Esto iniciará tanto el frontend (Vite) como el backend (Tauri + Actix).
     ```bash
     npm run tauri dev
     ```
 
-5.  **Compilar Binario Único**:
+4.  **Compilar Binario Único**:
     ```bash
     npm run tauri build
     ```
