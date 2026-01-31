@@ -518,14 +518,14 @@ export default function Admin() {
                                 <div style={{
                                     marginTop: '1rem',
                                     padding: '0.5rem',
-                                    background: '#111',
-                                    border: '1px solid #333',
+                                    background: 'var(--bg-pre)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '4px',
                                     maxHeight: '150px',
                                     overflowY: 'auto',
                                     fontFamily: 'monospace',
                                     fontSize: '0.8rem',
-                                    color: '#0f0'
+                                    color: '#00ff00'
                                 }}>
                                     {logs.length === 0 ? <span style={{ color: '#555' }}>Logs de actividad...</span> : logs.map((l, i) => (
                                         <div key={i}>{l}</div>
@@ -545,16 +545,16 @@ export default function Admin() {
                             <h3>Documentación de Web Services</h3>
                             <p>Utilice este endpoint para sincronizar requerimientos de productos desde el ERP.</p>
 
-                            <hr style={{ borderColor: '#444', margin: '1rem 0' }} />
+                            <hr style={{ borderColor: 'var(--hr-color)', margin: '1rem 0' }} />
 
                             <h4>Autenticación</h4>
-                            <p>Header requerido: <code style={{ background: '#333', padding: '2px 5px', borderRadius: '4px', color: '#e67e22' }}>X-API-KEY: secret-erp-key</code></p>
+                            <p>Header requerido: <code style={{ background: 'var(--bg-code)', padding: '2px 5px', borderRadius: '4px', color: 'var(--text-code)' }}>X-API-KEY: secret-erp-key</code></p>
 
                             <h4>Endpoint</h4>
-                            <p><code style={{ background: '#333', padding: '2px 5px', borderRadius: '4px' }}>POST /api/erp/import</code></p>
+                            <p><code style={{ background: 'var(--bg-code)', padding: '2px 5px', borderRadius: '4px', color: 'var(--text-code)' }}>POST /api/erp/import</code></p>
 
                             <h4>Ejemplo JSON</h4>
-                            <pre style={{ background: '#111', padding: '1rem', borderRadius: '8px', overflowX: 'auto', fontSize: '0.85rem' }}>
+                            <pre style={{ background: 'var(--bg-pre)', color: 'var(--text-pre)', padding: '1rem', borderRadius: '8px', overflowX: 'auto', fontSize: '0.85rem' }}>
                                 {`[
   {
     "external_id": "REQ-1001",
@@ -567,7 +567,7 @@ export default function Admin() {
 ]`}
                             </pre>
 
-                            <hr style={{ borderColor: '#444', margin: '2rem 0' }} />
+                            <hr style={{ borderColor: 'var(--hr-color)', margin: '2rem 0' }} />
 
                             <h4>Simulación de Pruebas</h4>
                             <p>Utilice esta herramienta para cargar automáticamente 10 productos de prueba y verificar el flujo del sistema sin nececidad de Postman.</p>

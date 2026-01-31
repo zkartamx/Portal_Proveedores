@@ -20,6 +20,13 @@
     --border-color: rgba(255, 255, 255, 0.05);
     --border-input: #333;
     --shadow-main: rgba(0, 0, 0, 0.5);
+
+    /* Code colors */
+    --bg-code: #333;
+    --bg-pre: #111;
+    --text-code: #e67e22;
+    --text-pre: #d1d5db;
+    --hr-color: #444;
 }
 
 [data-theme='light'] {
@@ -38,6 +45,13 @@
     --border-color: #e2e8f0;
     --border-input: #cbd5e1;
     --shadow-main: rgba(0, 0, 0, 0.1);
+
+    /* Code colors */
+    --bg-code: #e2e8f0;
+    --bg-pre: #1e293b;
+    --text-code: #c2410c;
+    --text-pre: #f1f5f9;
+    --hr-color: #e2e8f0;
 }
 
 body {
