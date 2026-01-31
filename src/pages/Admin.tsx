@@ -94,9 +94,14 @@ export default function Admin() {
     const fetchConfig = async () => {
         try {
             const res = await axios.get(`${API_URL}/admin/config/email`);
-            setConfig(res.data);
-            if (res.data.ui_theme) {
-                applyTheme(res.data.ui_theme);
+            // Asegurar que todos los campos existan para evitar errores al guardar
+            const newConfig = {
+                ...config,
+                ...res.data
+            };
+            setConfig(newConfig);
+            if (newConfig.ui_theme) {
+                applyTheme(newConfig.ui_theme);
             }
         } catch (e) {
             console.error("Error fetching config:", e);
@@ -120,9 +125,9 @@ export default function Admin() {
         try {
             await axios.post(`${API_URL}/admin/config/email`, config);
             alert("Configuración de correo actualizada");
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
-            alert("Error guardando config");
+            alert("Error guardando config: " + (e.response?.data || e.message));
         }
     }
 

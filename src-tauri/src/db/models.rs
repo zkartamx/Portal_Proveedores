@@ -96,7 +96,6 @@ pub struct EmailConfig {
     pub smtp_host: String,
     pub smtp_port: i32,
     pub smtp_user: String,
-    #[serde(skip_serializing)] 
     pub smtp_password: String,
     pub smtp_from: String,
     pub ui_theme: String,

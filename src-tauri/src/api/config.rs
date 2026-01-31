@@ -2,6 +2,8 @@ use actix_web::{web, HttpResponse, Responder};
 use crate::db::{DbPool, models::{EmailConfig, UpdateEmailConfig}};
 use diesel::prelude::*;
 
+const PASSWORD_MASK: &str = "********";
+
 pub async fn get_email_config(
     pool: web::Data<DbPool>,
 ) -> impl Responder {
@@ -12,8 +14,9 @@ pub async fn get_email_config(
 
     match config {
         Ok(mut c) => {
-            // Mask password or return empty/placeholder
-            c.smtp_password = "".to_string(); 
+            if !c.smtp_password.is_empty() {
+                c.smtp_password = PASSWORD_MASK.to_string(); 
+            }
             HttpResponse::Ok().json(c)
         },
         Err(_) => HttpResponse::NotFound().body("Config not found"),
@@ -27,29 +30,37 @@ pub async fn save_email_config(
     let mut conn = pool.get().expect("couldn't get db connection from pool");
     use crate::db::schema::email_config::dsl::*;
 
-    println!("Saving config: theme={}, host={}, password_len={}", item.ui_theme, item.smtp_host, item.smtp_password.len());
-    
-    // Always update theme and basic fields
-    let mut updated = diesel::update(email_config.find(1))
-        .set((
-            smtp_host.eq(&item.smtp_host),
-            smtp_port.eq(item.smtp_port),
-            smtp_user.eq(&item.smtp_user),
-            smtp_from.eq(&item.smtp_from),
-            ui_theme.eq(&item.ui_theme),
-        ))
-        .get_result::<EmailConfig>(&mut conn);
+    println!("Save attempt - Theme: {}, Password changed: {}", item.ui_theme, !item.smtp_password.is_empty() && item.smtp_password != PASSWORD_MASK);
 
-    // Only update password if not empty (it comes masked from frontend)
-    if !item.smtp_password.is_empty() {
-        updated = diesel::update(email_config.find(1))
-            .set(smtp_password.eq(&item.smtp_password))
-            .get_result::<EmailConfig>(&mut conn);
-    }
+    // Prepare update
+    // If password is empty OR matches our mask, we don't update it
+    let result = if item.smtp_password.is_empty() || item.smtp_password == PASSWORD_MASK {
+        diesel::update(email_config.find(1))
+            .set((
+                smtp_host.eq(&item.smtp_host),
+                smtp_port.eq(item.smtp_port),
+                smtp_user.eq(&item.smtp_user),
+                smtp_from.eq(&item.smtp_from),
+                ui_theme.eq(&item.ui_theme),
+            ))
+            .get_result::<EmailConfig>(&mut conn)
+    } else {
+        diesel::update(email_config.find(1))
+            .set(&item.into_inner())
+            .get_result::<EmailConfig>(&mut conn)
+    };
 
-    match updated {
-        Ok(c) => HttpResponse::Ok().json(c),
-        Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
+    match result {
+        Ok(mut c) => {
+            if !c.smtp_password.is_empty() {
+                c.smtp_password = PASSWORD_MASK.to_string();
+            }
+            HttpResponse::Ok().json(c)
+        },
+        Err(e) => {
+            eprintln!("Error saving config: {}", e);
+            HttpResponse::InternalServerError().body(format!("Database error: {}", e))
+        },
     }
 }
 
