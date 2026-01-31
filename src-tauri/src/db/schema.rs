@@ -6,6 +6,7 @@ diesel::table! {
         smtp_user -> Varchar,
         smtp_password -> Varchar,
         smtp_from -> Varchar,
+        ui_theme -> Varchar,
     }
 }
 

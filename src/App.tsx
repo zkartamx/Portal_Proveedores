@@ -4,14 +4,26 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import './App.css';
+import axios from 'axios';
 import { useEffect } from 'react';
 
 function App() {
   const isAuthenticated = !!localStorage.getItem('token');
 
   useEffect(() => {
-    const theme = localStorage.getItem('theme') || 'dark';
-    document.body.setAttribute('data-theme', theme);
+    const fetchTheme = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/api/admin/config/email");
+        const theme = res.data.ui_theme || 'dark';
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+      } catch (e) {
+        // Fallback to local
+        const theme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', theme);
+      }
+    };
+    fetchTheme();
   }, []);
 
   return (

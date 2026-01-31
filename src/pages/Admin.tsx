@@ -66,12 +66,11 @@ export default function Admin() {
     const [testing, setTesting] = useState(false);
     const [logs, setLogs] = useState<string[]>([]);
     const [showLogs, setShowLogs] = useState(true);
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
 
-    useEffect(() => {
-        document.body.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+    const applyTheme = (t: string) => {
+        document.body.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+    };
 
     const addLog = (msg: string) => {
         const time = new Date().toLocaleTimeString();
@@ -80,7 +79,7 @@ export default function Admin() {
     };
 
     const [config, setConfig] = useState({
-        smtp_host: '', smtp_port: 587, smtp_user: '', smtp_password: '', smtp_from: ''
+        smtp_host: '', smtp_port: 587, smtp_user: '', smtp_password: '', smtp_from: '', ui_theme: 'dark'
     });
 
     const [activeTab, setActiveTab] = useState('overview');
@@ -96,6 +95,7 @@ export default function Admin() {
         try {
             const res = await axios.get(`${API_URL}/admin/config/email`);
             setConfig(res.data);
+            applyTheme(res.data.ui_theme);
         } catch (e) {
             console.error(e);
         }
@@ -447,11 +447,15 @@ export default function Admin() {
                                     <label className="switch">
                                         <input
                                             type="checkbox"
-                                            checked={theme === 'light'}
-                                            onChange={(e) => setTheme(e.target.checked ? 'light' : 'dark')}
+                                            checked={config.ui_theme === 'light'}
+                                            onChange={(e) => {
+                                                const newTheme = e.target.checked ? 'light' : 'dark';
+                                                setConfig({ ...config, ui_theme: newTheme });
+                                                applyTheme(newTheme);
+                                            }}
                                         />
                                         <span className="slider"></span>
-                                        <span>{theme === 'light' ? 'Modo Claro' : 'Modo Obscuro'}</span>
+                                        <span>{config.ui_theme === 'light' ? 'Modo Claro' : 'Modo Obscuro'}</span>
                                     </label>
                                 </div>
 

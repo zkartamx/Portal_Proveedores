@@ -99,6 +99,7 @@ pub struct EmailConfig {
     #[serde(skip_serializing)] 
     pub smtp_password: String,
     pub smtp_from: String,
+    pub ui_theme: String,
 }
 
 #[derive(Insertable, AsChangeset, Deserialize, Debug)]
@@ -109,4 +110,5 @@ pub struct UpdateEmailConfig {
     pub smtp_user: String,
     pub smtp_password: String,
     pub smtp_from: String,
+    pub ui_theme: String,
 }

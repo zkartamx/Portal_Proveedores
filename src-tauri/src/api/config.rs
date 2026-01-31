@@ -49,6 +49,7 @@ pub async fn test_email_config(
         smtp_user: item.smtp_user.clone(),
         smtp_password: item.smtp_password.clone(),
         smtp_from: item.smtp_from.clone(),
+        ui_theme: item.ui_theme.clone(),
     };
 
     use crate::email_service;
