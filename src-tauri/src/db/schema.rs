@@ -7,6 +7,7 @@ diesel::table! {
         smtp_password -> Varchar,
         smtp_from -> Varchar,
         ui_theme -> Varchar,
+        login_image_url -> Varchar,
     }
 }
 

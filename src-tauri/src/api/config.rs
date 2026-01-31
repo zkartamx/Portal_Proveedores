@@ -42,6 +42,7 @@ pub async fn save_email_config(
                 smtp_user.eq(&item.smtp_user),
                 smtp_from.eq(&item.smtp_from),
                 ui_theme.eq(&item.ui_theme),
+                login_image_url.eq(&item.login_image_url),
             ))
             .get_result::<EmailConfig>(&mut conn)
     } else {
@@ -77,6 +78,7 @@ pub async fn test_email_config(
         smtp_password: item.smtp_password.clone(),
         smtp_from: item.smtp_from.clone(),
         ui_theme: item.ui_theme.clone(),
+        login_image_url: item.login_image_url.clone(),
     };
 
     use crate::email_service;

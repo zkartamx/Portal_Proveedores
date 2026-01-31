@@ -79,7 +79,7 @@ export default function Admin() {
     };
 
     const [config, setConfig] = useState({
-        smtp_host: '', smtp_port: 587, smtp_user: '', smtp_password: '', smtp_from: '', ui_theme: 'dark'
+        smtp_host: '', smtp_port: 587, smtp_user: '', smtp_password: '', smtp_from: '', ui_theme: 'dark', login_image_url: ''
     });
 
     const [activeTab, setActiveTab] = useState('overview');
@@ -463,6 +463,34 @@ export default function Admin() {
 
                                 <div style={{ gridColumn: 'span 2', marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
                                     <h4 style={{ marginBottom: '1rem' }}>Personalización</h4>
+
+                                    <div style={{ marginBottom: '1.5rem' }}>
+                                        <label>Imagen de Inicio de Sesión (Logo/Banner)</label>
+                                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                            <input
+                                                value={config.login_image_url}
+                                                onChange={e => setConfig({ ...config, login_image_url: e.target.value })}
+                                                placeholder="https://ejemplo.com/logo.png o nombre de archivo subido"
+                                                style={{ flex: 1 }}
+                                            />
+                                            <div style={{ width: '50px', height: '50px', background: '#333', borderRadius: '4px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+                                                {config.login_image_url ? (
+                                                    <img
+                                                        src={config.login_image_url.startsWith('http') ? config.login_image_url : `${API_URL}/uploads/${config.login_image_url}`}
+                                                        alt="Preview"
+                                                        style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
+                                                        onError={(e) => { (e.target as any).src = 'https://via.placeholder.com/50?text=Error'; }}
+                                                    />
+                                                ) : (
+                                                    <span style={{ fontSize: '0.6rem', color: '#666' }}>No img</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '5px' }}>
+                                            Tip: Puedes subir una imagen en la sección de productos y copiar el nombre aquí, o usar un link directo.
+                                        </p>
+                                    </div>
+
                                     <label className="switch">
                                         <input
                                             type="checkbox"

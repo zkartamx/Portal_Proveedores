@@ -23,9 +23,35 @@ export default function Login() {
         }
     };
 
+    const [config, setConfig] = useState<any>(null);
+
+    React.useEffect(() => {
+        const fetchConfig = async () => {
+            try {
+                const res = await axios.get(`${API_URL}/admin/config/email`);
+                setConfig(res.data);
+            } catch (e) {
+                console.error("No se pudo cargar la configuración de imagen:", e);
+            }
+        };
+        fetchConfig();
+    }, []);
+
+    const imageUrl = config?.login_image_url;
+    const finalImageUrl = imageUrl ? (imageUrl.startsWith('http') ? imageUrl : `${API_URL}/uploads/${imageUrl}`) : null;
+
     return (
         <div className="auth-container">
-            <h1>Portal Proveedores</h1>
+            {finalImageUrl && (
+                <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                    <img
+                        src={finalImageUrl}
+                        alt="Portal Logo"
+                        style={{ maxWidth: '180px', maxHeight: '100px', objectFit: 'contain' }}
+                    />
+                </div>
+            )}
+            <h1 style={{ marginTop: finalImageUrl ? '0' : '1rem' }}>Portal Proveedores</h1>
             <form className="auth-form" onSubmit={handleLogin}>
                 <div className="form-group">
                     <label>Correo</label>
