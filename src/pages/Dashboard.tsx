@@ -152,15 +152,15 @@ export default function Dashboard() {
                 <nav style={{ display: 'flex', gap: '1rem' }}>
                     <button
                         onClick={() => setActiveTab('requests')}
-                        style={{ background: activeTab === 'requests' ? '#3498db' : 'transparent', border: 'none', color: 'white', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}
+                        style={{ background: activeTab === 'requests' ? 'var(--primary)' : 'transparent', border: 'none', color: activeTab === 'requests' ? 'white' : 'var(--text-main)', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}
                     > Oportunidades </button>
                     <button
                         onClick={() => setActiveTab('docs')}
-                        style={{ background: activeTab === 'docs' ? '#3498db' : 'transparent', border: 'none', color: 'white', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}
+                        style={{ background: activeTab === 'docs' ? 'var(--primary)' : 'transparent', border: 'none', color: activeTab === 'docs' ? 'white' : 'var(--text-main)', padding: '5px 15px', borderRadius: '4px', cursor: 'pointer' }}
                     > Mi Documentación </button>
                 </nav>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    {localStorage.getItem('supplier_name') && <span style={{ color: '#aaa', fontSize: '0.9rem' }}>Hola, {localStorage.getItem('supplier_name')}</span>}
+                    {localStorage.getItem('supplier_name') && <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Hola, {localStorage.getItem('supplier_name')}</span>}
                     <button className="logout-btn" onClick={handleLogout}>Cerrar Sesión</button>
                 </div>
             </header>
@@ -171,7 +171,7 @@ export default function Dashboard() {
                         <div className="request-card" style={{ textAlign: 'center', padding: '3rem', maxWidth: '600px', margin: '2rem auto' }}>
                             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⏳</div>
                             <h3>Perfil en Revisión</h3>
-                            <p style={{ color: '#aaa', lineHeight: '1.6' }}>
+                            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>
                                 Aún no tienes acceso a las ofertas. Tu perfil y documentación están siendo revisados por nuestro equipo administrativo.
                                 <br /><br />
                                 Te notificaremos en cuanto tu cuenta sea validada por completo.
@@ -199,8 +199,8 @@ export default function Dashboard() {
                                                     ✅ Enviada
                                                 </button>
                                             ) : quotingReqId === req.id ? (
-                                                <form onSubmit={(e) => submitQuote(e, req.id)} style={{ marginTop: '1rem', borderTop: '1px solid #333', paddingTop: '1rem' }}>
-                                                    <h4 style={{ marginBottom: '10px', color: '#bdc3c7' }}>Nueva Oferta</h4>
+                                                <form onSubmit={(e) => submitQuote(e, req.id)} style={{ marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                                                    <h4 style={{ marginBottom: '10px', color: 'var(--text-muted)' }}>Nueva Oferta</h4>
                                                     <div style={{ display: 'grid', gap: '10px', marginBottom: '10px' }}>
                                                         <input
                                                             autoFocus
@@ -209,7 +209,7 @@ export default function Dashboard() {
                                                             required
                                                             value={quoteForm.price}
                                                             onChange={e => setQuoteForm({ ...quoteForm, price: e.target.value })}
-                                                            style={{ padding: '8px', background: '#222', border: '1px solid #444', color: 'white', borderRadius: '4px' }}
+                                                            style={{ padding: '8px', background: 'var(--bg-input)', border: '1px solid var(--border-input)', color: 'var(--text-main)', borderRadius: '4px' }}
                                                         />
                                                         <input
                                                             type="text"
@@ -217,7 +217,7 @@ export default function Dashboard() {
                                                             required
                                                             value={quoteForm.delivery_time}
                                                             onChange={e => setQuoteForm({ ...quoteForm, delivery_time: e.target.value })}
-                                                            style={{ padding: '8px', background: '#222', border: '1px solid #444', color: 'white', borderRadius: '4px' }}
+                                                            style={{ padding: '8px', background: 'var(--bg-input)', border: '1px solid var(--border-input)', color: 'var(--text-main)', borderRadius: '4px' }}
                                                         />
 
                                                         {/* File Input */}
@@ -238,9 +238,9 @@ export default function Dashboard() {
                                                                 style={{
                                                                     display: 'block',
                                                                     padding: '8px',
-                                                                    background: '#333',
-                                                                    border: '1px dashed #666',
-                                                                    color: '#ccc',
+                                                                    background: 'var(--bg-input)',
+                                                                    border: '1px dashed var(--text-dim)',
+                                                                    color: 'var(--text-muted)',
                                                                     borderRadius: '4px',
                                                                     cursor: 'pointer',
                                                                     textAlign: 'center'
@@ -256,7 +256,7 @@ export default function Dashboard() {
                                                     </div>
                                                     <div style={{ display: 'flex', gap: '10px' }}>
                                                         <button type="submit" className="action-btn" style={{ flex: 1 }}>Confirmar</button>
-                                                        <button type="button" onClick={() => setQuotingReqId(null)} style={{ background: 'transparent', border: '1px solid #666', color: '#ccc', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
+                                                        <button type="button" onClick={() => setQuotingReqId(null)} style={{ background: 'transparent', border: '1px solid var(--border-input)', color: 'var(--text-dim)', padding: '8px 15px', borderRadius: '4px', cursor: 'pointer' }}>Cancelar</button>
                                                     </div>
                                                 </form>
                                             ) : (
@@ -271,19 +271,19 @@ export default function Dashboard() {
                 ) : (
                     <div className="request-card" style={{ maxWidth: '800px', margin: '0 auto' }}>
                         <h3>Gestión de Documentos</h3>
-                        <p style={{ color: '#aaa', marginBottom: '1.5rem' }}>Especifique o adjunte los documentos requeridos para su validación como proveedor.</p>
+                        <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Especifique o adjunte los documentos requeridos para su validación como proveedor.</p>
 
                         <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ display: 'block', marginBottom: '8px', color: '#ccc' }}>Listado de Documentos:</label>
+                            <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-muted)' }}>Listado de Documentos:</label>
                             <textarea
                                 value={supplierDocs}
                                 onChange={e => setSupplierDocs(e.target.value)}
                                 placeholder="Ej: Acta Constitutiva.pdf, Constancia Fiscal.pdf..."
-                                style={{ width: '100%', minHeight: '120px', padding: '12px', background: '#111', border: '1px solid #444', color: 'white', borderRadius: '4px', fontSize: '1rem' }}
+                                style={{ width: '100%', minHeight: '120px', padding: '12px', background: 'var(--bg-input)', border: '1px solid var(--border-input)', color: 'var(--text-main)', borderRadius: '4px', fontSize: '1rem' }}
                             />
                         </div>
 
-                        <div style={{ padding: '1rem', background: '#222', borderRadius: '8px', marginBottom: '1.5rem' }}>
+                        <div style={{ padding: '1rem', background: 'var(--bg-details)', borderRadius: '8px', marginBottom: '1.5rem' }}>
                             <h4 style={{ marginBottom: '10px' }}>Subir Nuevo Archivo</h4>
                             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                 <input

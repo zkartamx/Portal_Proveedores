@@ -4,9 +4,15 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import './App.css';
+import { useEffect } from 'react';
 
 function App() {
   const isAuthenticated = !!localStorage.getItem('token');
+
+  useEffect(() => {
+    const theme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', theme);
+  }, []);
 
   return (
     <Router>
