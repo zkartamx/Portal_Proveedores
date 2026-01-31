@@ -10,6 +10,16 @@ pub mod suppliers;
 pub mod files;
 
 pub fn config(cfg: &mut web::ServiceConfig) {
+    let uploads_path = if std::path::Path::new("uploads").exists() {
+        "uploads"
+    } else if std::path::Path::new("src-tauri/uploads").exists() {
+        "src-tauri/uploads"
+    } else {
+        "uploads"
+    };
+
+    cfg.service(actix_files::Files::new("/api/uploads", uploads_path).show_files_listing());
+
     cfg.service(
         web::scope("/api")
             .route("/login", web::post().to(auth::login))
@@ -34,5 +44,4 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .route("/upload", web::post().to(files::upload_file))
             .route("/erp/import", web::post().to(erp::import_requests))
     );
-    cfg.service(actix_files::Files::new("/api/uploads", "./uploads").show_files_listing());
 }

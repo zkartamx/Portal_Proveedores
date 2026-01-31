@@ -21,7 +21,20 @@ pub async fn upload_file(mut payload: Multipart) -> Result<HttpResponse, Error> 
             let new_filename = format!("{}.{}", Uuid::new_v4(), extension);
             filename = new_filename.clone();
             
-            let upload_dir = "./uploads";
+            // Improved path detection: check local uploads first, then src-tauri/uploads
+            let upload_dir = if std::path::Path::new("uploads").exists() {
+                "uploads"
+            } else if std::path::Path::new("src-tauri/uploads").exists() {
+                "src-tauri/uploads"
+            } else {
+                // If neither exists, decide based on where we are
+                if std::path::Path::new("src-tauri").exists() {
+                    "src-tauri/uploads"
+                } else {
+                    "uploads"
+                }
+            };
+
             if !std::path::Path::new(upload_dir).exists() {
                 std::fs::create_dir_all(upload_dir)?;
             }
