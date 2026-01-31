@@ -131,6 +131,31 @@ export default function Admin() {
         }
     }
 
+    const handleLoginImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            addLog(`Subiendo imagen de inicio: ${file.name}...`);
+            const res = await axios.post(`${API_URL}/upload`, formData);
+            const fileName = res.data.file;
+
+            // Actualizar config local y enviar al server inmediatamente
+            const newConfig = { ...config, login_image_url: fileName };
+            setConfig(newConfig);
+
+            await axios.post(`${API_URL}/admin/config/email`, newConfig);
+            addLog(`Imagen actualizada: ${fileName}`);
+            alert("Imagen de inicio actualizada correctamente.");
+        } catch (err: any) {
+            console.error(err);
+            alert("Error subiendo imagen: " + (err.response?.data || err.message));
+        }
+    };
+
     const testConfig = async () => {
         setTesting(true);
         addLog(`Iniciando prueba de correo a: ${config.smtp_from}...`);
@@ -467,19 +492,27 @@ export default function Admin() {
                                     <div style={{ marginBottom: '1.5rem' }}>
                                         <label>Imagen de Inicio de Sesión (Logo/Banner)</label>
                                         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                            <input
-                                                value={config.login_image_url}
-                                                onChange={e => setConfig({ ...config, login_image_url: e.target.value })}
-                                                placeholder="https://ejemplo.com/logo.png o nombre de archivo subido"
-                                                style={{ flex: 1 }}
-                                            />
-                                            <div style={{ width: '50px', height: '50px', background: '#333', borderRadius: '4px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+                                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                <input
+                                                    value={config.login_image_url}
+                                                    onChange={e => setConfig({ ...config, login_image_url: e.target.value })}
+                                                    placeholder="https://ejemplo.com/logo.png o sube un archivo ➔"
+                                                    style={{ width: '100%' }}
+                                                />
+                                                <input
+                                                    type="file"
+                                                    accept="image/*"
+                                                    onChange={handleLoginImageUpload}
+                                                    style={{ fontSize: '0.8rem', padding: '4px', border: 'none', background: 'transparent' }}
+                                                />
+                                            </div>
+                                            <div style={{ width: '60px', height: '60px', background: '#333', borderRadius: '4px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--border-color)', flexShrink: 0 }}>
                                                 {config.login_image_url ? (
                                                     <img
                                                         src={config.login_image_url.startsWith('http') ? config.login_image_url : `${API_URL}/uploads/${config.login_image_url}`}
                                                         alt="Preview"
                                                         style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
-                                                        onError={(e) => { (e.target as any).src = 'https://via.placeholder.com/50?text=Error'; }}
+                                                        onError={(e) => { (e.target as any).src = 'https://via.placeholder.com/60?text=Error'; }}
                                                     />
                                                 ) : (
                                                     <span style={{ fontSize: '0.6rem', color: '#666' }}>No img</span>
@@ -487,7 +520,7 @@ export default function Admin() {
                                             </div>
                                         </div>
                                         <p style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '5px' }}>
-                                            Tip: Puedes subir una imagen en la sección de productos y copiar el nombre aquí, o usar un link directo.
+                                            Carga una imagen directamente desde tu computadora o pega una URL de internet.
                                         </p>
                                     </div>
 
