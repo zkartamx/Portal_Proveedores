@@ -21,7 +21,12 @@ pub async fn upload_file(mut payload: Multipart) -> Result<HttpResponse, Error> 
             let new_filename = format!("{}.{}", Uuid::new_v4(), extension);
             filename = new_filename.clone();
             
-            let filepath = format!("./uploads/{}", new_filename);
+            let upload_dir = "./uploads";
+            if !std::path::Path::new(upload_dir).exists() {
+                std::fs::create_dir_all(upload_dir)?;
+            }
+
+            let filepath = format!("{}/{}", upload_dir, new_filename);
             
             // File::create is blocking, in a real production app use spawn_blocking
             let mut f = std::fs::File::create(filepath)?;
@@ -38,5 +43,5 @@ pub async fn upload_file(mut payload: Multipart) -> Result<HttpResponse, Error> 
         return Ok(HttpResponse::BadRequest().body("No file found in payload"));
     }
 
-    Ok(HttpResponse::Ok().json(serde_json::json!({ "filename": filename })))
+    Ok(HttpResponse::Ok().json(serde_json::json!({ "file": filename })))
 }
