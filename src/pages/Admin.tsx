@@ -66,6 +66,12 @@ export default function Admin() {
     const [testing, setTesting] = useState(false);
     const [logs, setLogs] = useState<string[]>([]);
     const [showLogs, setShowLogs] = useState(true);
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+
+    useEffect(() => {
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }, [theme]);
 
     const addLog = (msg: string) => {
         const time = new Date().toLocaleTimeString();
@@ -436,7 +442,20 @@ export default function Admin() {
                                     </label>
                                 </div>
 
-                                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '10px' }}>
+                                <div style={{ gridColumn: 'span 2', marginTop: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
+                                    <h4 style={{ marginBottom: '1rem' }}>Personalización</h4>
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={theme === 'light'}
+                                            onChange={(e) => setTheme(e.target.checked ? 'light' : 'dark')}
+                                        />
+                                        <span className="slider"></span>
+                                        <span>{theme === 'light' ? 'Modo Claro' : 'Modo Obscuro'}</span>
+                                    </label>
+                                </div>
+
+                                <div style={{ gridColumn: 'span 2', display: 'flex', gap: '10px', marginTop: '1rem' }}>
                                     <button type="submit" style={{ flex: 1 }}>Guardar</button>
                                     <button type="button" onClick={testConfig} disabled={testing} style={{ flex: 1, background: '#6c5ce7', opacity: testing ? 0.7 : 1 }}>
                                         {testing ? "Enviando..." : "Prueba"}
