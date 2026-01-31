@@ -26,7 +26,8 @@
     --bg-pre: #111;
     --text-code: #e67e22;
     --text-pre: #d1d5db;
-    --hr-color: #444;
+    --bg-logout: rgba(255, 77, 77, 0.1);
+    --text-logout: #ff4d4d;
 }
 
 [data-theme='light'] {
@@ -51,7 +52,8 @@
     --bg-pre: #1e293b;
     --text-code: #c2410c;
     --text-pre: #f1f5f9;
-    --hr-color: #e2e8f0;
+    --bg-logout: #fee2e2;
+    --text-logout: #dc2626;
 }
 
 body {
@@ -444,11 +446,14 @@ a:hover {
 
 .logout-nav {
     margin-top: auto;
-    color: #ff4d4d !important;
+    color: var(--text-logout) !important;
+    background: var(--bg-logout) !important;
+    border: 1px solid transparent;
 }
 
 .logout-nav:hover {
-    background: rgba(255, 77, 77, 0.1) !important;
+    background: var(--text-logout) !important;
+    color: white !important;
 }
 
 .content-area {
