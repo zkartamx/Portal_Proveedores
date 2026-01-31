@@ -12,7 +12,9 @@ pub fn start_actix_server(db_url: String, port: u16) {
         sys.block_on(async move {
             let pool = db::establish_connection(&db_url);
             
+            let cwd = std::env::current_dir().unwrap_or_default();
             println!("Starting server at http://0.0.0.0:{}", port);
+            println!("Current Working Directory: {:?}", cwd);
             
             HttpServer::new(move || {
                 App::new()

@@ -32,7 +32,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .route("/suppliers/{id}", web::get().to(suppliers::get_supplier))
             .route("/suppliers/{id}/docs", web::put().to(suppliers::update_docs))
             .route("/upload", web::post().to(files::upload_file))
-            .service(actix_files::Files::new("/uploads", "./uploads").show_files_listing())
             .route("/erp/import", web::post().to(erp::import_requests))
     );
+    cfg.service(actix_files::Files::new("/api/uploads", "./uploads").show_files_listing());
 }
