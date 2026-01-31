@@ -95,14 +95,28 @@ export default function Admin() {
         try {
             const res = await axios.get(`${API_URL}/admin/config/email`);
             setConfig(res.data);
-            applyTheme(res.data.ui_theme);
+            if (res.data.ui_theme) {
+                applyTheme(res.data.ui_theme);
+            }
         } catch (e) {
-            console.error(e);
+            console.error("Error fetching config:", e);
         }
     }
 
+    const saveTheme = async (newTheme: string) => {
+        // Deep copy of current config to avoid stale state issues in concurrent updates
+        const updatedConfig = { ...config, ui_theme: newTheme };
+        try {
+            await axios.post(`${API_URL}/admin/config/email`, updatedConfig);
+            console.log("Theme saved to server:", newTheme);
+        } catch (e) {
+            console.error("Failed to save theme to server:", e);
+        }
+    };
+
     const saveConfig = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log("Saving global config:", config);
         try {
             await axios.post(`${API_URL}/admin/config/email`, config);
             alert("Configuración de correo actualizada");
@@ -452,6 +466,7 @@ export default function Admin() {
                                                 const newTheme = e.target.checked ? 'light' : 'dark';
                                                 setConfig({ ...config, ui_theme: newTheme });
                                                 applyTheme(newTheme);
+                                                saveTheme(newTheme);
                                             }}
                                         />
                                         <span className="slider"></span>

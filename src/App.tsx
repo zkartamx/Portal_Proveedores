@@ -11,16 +11,20 @@ function App() {
   const isAuthenticated = !!localStorage.getItem('token');
 
   useEffect(() => {
+    // 1. Aplicar tema guardado localmente de inmediato para evitar parpadeos
+    const cachedTheme = localStorage.getItem('theme') || 'dark';
+    document.body.setAttribute('data-theme', cachedTheme);
+
     const fetchTheme = async () => {
       try {
         const res = await axios.get("http://localhost:8080/api/admin/config/email");
-        const theme = res.data.ui_theme || 'dark';
-        document.body.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        if (res.data && res.data.ui_theme) {
+          const theme = res.data.ui_theme;
+          document.body.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+        }
       } catch (e) {
-        // Fallback to local
-        const theme = localStorage.getItem('theme') || 'dark';
-        document.body.setAttribute('data-theme', theme);
+        console.warn("No se pudo sincronizar el tema global, usando cache.");
       }
     };
     fetchTheme();

@@ -27,9 +27,25 @@ pub async fn save_email_config(
     let mut conn = pool.get().expect("couldn't get db connection from pool");
     use crate::db::schema::email_config::dsl::*;
 
-    let updated = diesel::update(email_config.find(1))
-        .set(&item.into_inner())
+    println!("Saving config: theme={}, host={}, password_len={}", item.ui_theme, item.smtp_host, item.smtp_password.len());
+    
+    // Always update theme and basic fields
+    let mut updated = diesel::update(email_config.find(1))
+        .set((
+            smtp_host.eq(&item.smtp_host),
+            smtp_port.eq(item.smtp_port),
+            smtp_user.eq(&item.smtp_user),
+            smtp_from.eq(&item.smtp_from),
+            ui_theme.eq(&item.ui_theme),
+        ))
         .get_result::<EmailConfig>(&mut conn);
+
+    // Only update password if not empty (it comes masked from frontend)
+    if !item.smtp_password.is_empty() {
+        updated = diesel::update(email_config.find(1))
+            .set(smtp_password.eq(&item.smtp_password))
+            .get_result::<EmailConfig>(&mut conn);
+    }
 
     match updated {
         Ok(c) => HttpResponse::Ok().json(c),
